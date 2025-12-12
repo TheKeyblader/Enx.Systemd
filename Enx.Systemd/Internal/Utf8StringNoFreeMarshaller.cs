@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Enx.Systemd.Internal;
 
-[CLSCompliant(false)]
 [CustomMarshaller(typeof(string), MarshalMode.Default, typeof(Utf8StringNoFreeMarshaller))]
 [CustomMarshaller(typeof(string), MarshalMode.ManagedToUnmanagedIn, typeof(ManagedToUnmanagedIn))]
 public static unsafe class Utf8StringNoFreeMarshaller

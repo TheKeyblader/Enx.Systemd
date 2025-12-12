@@ -1,15 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <LangVersion>default</LangVersion>
-        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Enums.NET" Version="5.0.0" />
-    </ItemGroup>
+  <PropertyGroup>
+    <PackageId>Enx.Systemd</PackageId>
+    <PackageTags>systemd;sd-device</PackageTags>
+    <Authors>Jean-François Pustay</Authors>
+    <Company>Personnal</Company>
+    <Version>0.0.1-alpha</Version>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>
+      In development
+      Library allowing to use full systemd library
+      Actually only implements part of sd-device
+    </Description>
+    <PackageProjectUrl>https://github.com/TheKeyblader/Enx.Systemd</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Enums.NET" Version="5.0.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath=""/>
+  </ItemGroup>
 
 </Project>
