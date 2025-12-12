@@ -1,0 +1,16 @@
+using System.Runtime.InteropServices.Marshalling;
+
+namespace Enx.Systemd.Internal;
+
+[CLSCompliant(false)]
+[CustomMarshaller(typeof(bool), MarshalMode.Default, typeof(BoolMarshaller))]
+public static class BoolMarshaller
+{
+    public static int ConvertToUnmanaged(bool managed)
+    {
+        return managed ? 1 : 0;
+    }
+
+    public static bool ConvertToManaged(int unmanaged)
+        => unmanaged == 1;
+}

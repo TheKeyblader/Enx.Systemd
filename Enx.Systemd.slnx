@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Enx.Systemd.Sandbox/Enx.Systemd.Sandbox.csproj" />
+  <Project Path="Enx.Systemd/Enx.Systemd.csproj" />
+</Solution>
