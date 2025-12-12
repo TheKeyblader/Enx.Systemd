@@ -19,7 +19,7 @@ jobs:
 
             - name: dotnet pack
               run: |
-                dotnet pack
+                dotnet pack ./Enx.Systemd/Enx.Systemd.csproj
             
             - name: NuGet login (OIDC → temp API key)
               uses: NuGet/login@v1
