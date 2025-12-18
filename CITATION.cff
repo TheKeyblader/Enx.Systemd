@@ -1,0 +1,22 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Enx.Systemd
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jean-François
+    family-names: Pustay
+repository-code: 'https://github.com/TheKeyblader/Enx.Systemd'
+url: 'https://thekeyblader.github.io/Enx.Systemd/'
+license: GPL-3.0-or-later
+references:
+  - authors:
+     - family-names: Systemd
+    title: systemd
+    type: software
+    repository-code: 'https://github.com/systemd/systemd'
+    url: 'https://systemd.io/'
