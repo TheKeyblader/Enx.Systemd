@@ -39,6 +39,10 @@
     "globalMetadata": {
       "_appName": "Enx.Systemd",
       "_appTitle": "Enx.Systemd",
+      "_appFaviconPath": "images/icon.png",
+      "_appLogoPath": "images/icon.png",
+      "_appFooter": "<strong>Enx.Systemd</strong>",
+      "_copyrightFooter": "The website is available under the terms of the GPL-3.0 license",
       "_enableSearch": true,
       "pdf": false
     }
