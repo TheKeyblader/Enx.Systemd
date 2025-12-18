@@ -87,11 +87,11 @@ public class Device : IDisposable
         return new Device(handle);
     }
 
-    public Errno NewChild(string suffix, [NotNullWhen(true)] out Device? child)
+    public int NewChild(string suffix, [NotNullWhen(true)] out Device? child)
     {
         var result = DeviceNewChild(out var childhandle, Handle, suffix);
         child = result < 0 ? null : new Device(childhandle, Handle);
-        return (Errno)Math.Abs(result);
+        return result;
     }
 
     [JsonIgnore]

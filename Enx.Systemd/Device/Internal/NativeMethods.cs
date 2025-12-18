@@ -61,7 +61,8 @@ public static partial class NativeMethods
         public static partial int DeviceGetParent(SdDeviceHandle device, out SdDeviceHandle ret);
 
         [LibraryImport(Library, EntryPoint = "sd_device_get_parent_with_subsystem_devtype",
-            StringMarshalling = StringMarshalling.Utf16)]
+            StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
         public static partial int DeviceGetParentWithSubsystemDevtype(SdDeviceHandle deviceHandle, string subsystem,
             string devtype, out SdDeviceHandle ret);
 
@@ -153,10 +154,12 @@ public static partial class NativeMethods
         [return: MarshalUsing(typeof(Utf8StringNoFreeMarshaller))]
         public static unsafe partial string? DeviceGetTagNext(SdDeviceHandle device);
 
-        [LibraryImport(Library, EntryPoint = "sd_device_get_child_first", StringMarshalling = StringMarshalling.Utf8)]
+        [LibraryImport(Library, EntryPoint = "sd_device_get_child_first", StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
         public static unsafe partial SdDeviceHandle DeviceGetChildFirst(SdDeviceHandle device, string? suffix);
 
-        [LibraryImport(Library, EntryPoint = "sd_device_get_child_next", StringMarshalling = StringMarshalling.Utf8)]
+        [LibraryImport(Library, EntryPoint = "sd_device_get_child_next", StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
         public static unsafe partial SdDeviceHandle DeviceGetChildNext(SdDeviceHandle device, string? suffix);
 
         [LibraryImport(Library, EntryPoint = "sd_device_get_devlink_first")]
@@ -275,6 +278,85 @@ public static partial class NativeMethods
 
         [LibraryImport(Library, EntryPoint = "sd_device_enumerator_add_all_parents")]
         public static partial int DeviceEnumeratorAddAllParents(SdDeviceEnumeratorHandle handle);
+
+        #endregion
+
+        #endregion
+
+        #region DeviceMonitor
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_new")]
+        public static partial int DeviceMonitorNew(out SdDeviceMonitorHandle ret);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_ref")]
+        public static partial nint DeviceMonitorRef(nint ret);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_unref")]
+        public static partial nint DeviceMonitorUnref(nint ret);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_set_receive_buffer_size")]
+        public static partial int DeviceMonitorSetReceiveBufferSize(SdDeviceMonitorHandle m, ulong size);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_attach_event")]
+        public static partial int DeviceMonitorAttachEvent(SdDeviceMonitorHandle m, SdEventHandle @event);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_detach_event")]
+        public static partial int DeviceMonitorDetachEvent(SdDeviceMonitorHandle m);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_get_event")]
+        public static partial SdEventHandle DeviceMonitorGetEvent(SdDeviceMonitorHandle m);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_get_event_source")]
+        public static partial SdEventSourceHandle DeviceMonitorGetEventSource(SdDeviceMonitorHandle m);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_set_description",
+            StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
+        public static partial int DeviceMonitorSetDescription(SdDeviceMonitorHandle m, string description);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_get_description",
+            StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
+        public static partial int DeviceMonitorGetDescription(SdDeviceMonitorHandle m, out string ret);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int DeviceMonitorHandler(nint m, nint device, nint userdata);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_start")]
+        public static partial int DeviceMonitorStart(SdDeviceMonitorHandle m, DeviceMonitorHandler callback,
+            nint userdata);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_stop")]
+        public static partial int DeviceMonitorStop(SdDeviceMonitorHandle m);
+
+        #region Filter
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_filter_add_match_subsystem_devtype",
+            StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
+        public static partial int DeviceMonitorFilterAddMatchSubsystemDevType(SdDeviceMonitorHandle m, string subsystem,
+            string devtype);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_filter_add_match_tag",
+            StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
+        public static partial int DeviceMonitorAddMatchTag(SdDeviceMonitorHandle m, string tag);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_filter_add_match_sysattr",
+            StringMarshalling = StringMarshalling.Custom,
+            StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
+        public static partial int DeviceMonitorAddMatchSysattr(SdDeviceMonitorHandle m, string sysattr, string value,
+            [MarshalUsing(typeof(BoolMarshaller))] bool match);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_filter_add_match_parent")]
+        public static partial int DeviceMonitorAddMatchParent(SdDeviceMonitorHandle m, SdDeviceHandle device,
+            [MarshalUsing(typeof(BoolMarshaller))] bool match);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_filter_update")]
+        public static partial int DeviceMonitorFilterUpdate(SdDeviceMonitorHandle m);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_filter_remove")]
+        public static partial int DeviceMonitorFilterRemove(SdDeviceMonitorHandle m);
 
         #endregion
 
