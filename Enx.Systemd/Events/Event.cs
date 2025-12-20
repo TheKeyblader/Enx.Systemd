@@ -4,26 +4,37 @@ using static Enx.Systemd.SystemdUtils;
 
 namespace Enx.Systemd.Events;
 
-public class Event : IDisposable
+/// <summary>
+/// Wraps a systemd <c>sd_event</c> loop instance.
+/// Prefer <see cref="CreateDefault"/>; the primary constructor is intended for advanced scenarios.
+/// </summary>
+/// <param name="handle">The event handle to wrap.</param>
+/// <param name="shouldRef">Whether to increment the handle reference count.</param>
+public class Event(SdEventHandle handle, bool shouldRef) : BaseWrapper<SdEventHandle>(handle, shouldRef)
 {
-    public SdEventHandle Handle { get; }
+    /// <summary>
+    /// Increments the native reference count for the underlying event handle.
+    /// </summary>
+    public override void Ref() => EventRef(Handle.DangerousGetHandle());
 
-    public static Event Default
+    /// <summary>
+    /// Creates the default event loop for the current process.
+    /// </summary>
+    /// <returns>The created event loop.</returns>
+    public static Event CreateDefault()
     {
-        get
-        {
-            ThrowIfError(EventDefault(out var ret));
-            return new Event(ret);
-        }
+        ThrowIfError(EventDefault(out var ret));
+        return new Event(ret, false);
     }
 
-    public Event(SdEventHandle handle)
-    {
-        Handle = handle;
-    }
-
+    /// <summary>
+    /// Gets the file descriptor associated with the event loop.
+    /// </summary>
     public int Fd => EventGetFd(Handle);
 
+    /// <summary>
+    /// Gets the current state of the event loop.
+    /// </summary>
     public EventState State
     {
         get
@@ -34,6 +45,9 @@ public class Event : IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets the thread ID of the event loop owner.
+    /// </summary>
     public int Tid
     {
         get
@@ -43,6 +57,9 @@ public class Event : IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets the exit code if the loop is exiting, or null otherwise.
+    /// </summary>
     public int? ExitCode
     {
         get
@@ -53,6 +70,9 @@ public class Event : IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets or sets the watchdog state.
+    /// </summary>
     public bool Watchdog
     {
         get
@@ -64,6 +84,9 @@ public class Event : IDisposable
         set => ThrowIfError(EventSetWatchdog(Handle, value ? 1 : 0));
     }
 
+    /// <summary>
+    /// Gets the loop iteration counter.
+    /// </summary>
     public ulong Iteration
     {
         get
@@ -73,44 +96,59 @@ public class Event : IDisposable
         }
     }
 
+    /// <summary>
+    /// Enables or disables automatic exit on termination signals.
+    /// </summary>
     public bool SignalExit
     {
         set => ThrowIfError(EventSetSignalExit(Handle, value ? 1 : 0));
     }
 
+    /// <summary>
+    /// Prepares the event loop for dispatch.
+    /// </summary>
     public void Prepare()
     {
         ThrowIfError(EventPrepare(Handle));
     }
 
+    /// <summary>
+    /// Waits for events, with a timeout in microseconds.
+    /// </summary>
     public void Wait(ulong usec)
     {
         ThrowIfError(EventWait(Handle, usec));
     }
 
+    /// <summary>
+    /// Dispatches pending events.
+    /// </summary>
     public void Dispatch()
     {
         ThrowIfError(EventDispatch(Handle));
     }
 
+    /// <summary>
+    /// Runs the event loop for one iteration with a timeout in microseconds.
+    /// </summary>
     public void Run(ulong usec)
     {
         ThrowIfError(EventRun(Handle, usec));
     }
 
+    /// <summary>
+    /// Runs the event loop until it exits.
+    /// </summary>
     public void Loop()
     {
         ThrowIfError(EventLoop(Handle));
     }
 
+    /// <summary>
+    /// Requests the event loop to exit with the specified code.
+    /// </summary>
     public int Exit(int code)
     {
         return EventExit(Handle, code);
-    }
-
-    public void Dispose()
-    {
-        Handle.Dispose();
-        GC.SuppressFinalize(this);
     }
 }

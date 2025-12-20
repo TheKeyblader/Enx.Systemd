@@ -11,5 +11,5 @@ public static class BoolMarshaller
     }
 
     public static bool ConvertToManaged(int unmanaged)
-        => unmanaged == 1;
+        => unmanaged < 0 ? throw new SystemdException(unmanaged) : unmanaged != 0;
 }

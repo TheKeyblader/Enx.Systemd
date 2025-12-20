@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
+using Enx.Systemd.Device;
 
 // ReSharper disable once CheckNamespace
 namespace Enx.Systemd.Internal;
@@ -115,7 +116,7 @@ public static partial class NativeMethods
 
         [LibraryImport(Library, EntryPoint = "sd_device_get_action", StringMarshalling = StringMarshalling.Custom,
             StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
-        public static partial int DeviceGetAction(SdDeviceHandle device, out uint ret);
+        public static partial int DeviceGetAction(SdDeviceHandle device, out DeviceAction ret);
 
         [LibraryImport(Library, EntryPoint = "sd_device_get_seqnum", StringMarshalling = StringMarshalling.Custom,
             StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
@@ -318,6 +319,10 @@ public static partial class NativeMethods
             StringMarshalling = StringMarshalling.Custom,
             StringMarshallingCustomType = typeof(Utf8StringNoFreeMarshaller))]
         public static partial int DeviceMonitorGetDescription(SdDeviceMonitorHandle m, out string ret);
+
+        [LibraryImport(Library, EntryPoint = "sd_device_monitor_is_running")]
+        [return: MarshalUsing(typeof(BoolMarshaller))]
+        public static partial bool DeviceMonitorIsRunning(SdDeviceMonitorHandle m);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int DeviceMonitorHandler(nint m, nint device, nint userdata);

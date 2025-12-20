@@ -141,16 +141,17 @@ public static partial class NativeMethods
             out string description);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_prepare")]
-        public static partial int EventSourceSetPrepare(SdEventSourceHandle s, Handler callback);
+        public static partial int EventSourceSetPrepare(SdEventSourceHandle s, Handler? callback);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_pending")]
-        public static partial int EventSourceGetPending(SdEventSourceHandle s);
+        [return: MarshalUsing(typeof(BoolMarshaller))]
+        public static partial bool EventSourceGetPending(SdEventSourceHandle s);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_priority")]
         public static partial int EventSourceGetPriority(SdEventSourceHandle s, out long priority);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_priority")]
-        public static partial int EventSourceSetPriority(SdEventSourceHandle s, ulong priority);
+        public static partial int EventSourceSetPriority(SdEventSourceHandle s, long priority);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_enabled")]
         public static partial int EventSourceGetEnabled(SdEventSourceHandle s,
@@ -167,19 +168,21 @@ public static partial class NativeMethods
         public static partial int EventSourceSetIoFd(SdEventSourceHandle s, int fd);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_io_fd_own")]
-        public static partial int EventSourceGetIoFdOwn(SdEventSourceHandle s);
+        [return: MarshalUsing(typeof(BoolMarshaller))]
+        public static partial bool EventSourceGetIoFdOwn(SdEventSourceHandle s);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_io_fd_own")]
-        public static partial int EventSourceSetIoFdOwn(SdEventSourceHandle s, int own);
+        public static partial int EventSourceSetIoFdOwn(SdEventSourceHandle s,
+            [MarshalUsing(typeof(BoolMarshaller))] bool own);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_io_events")]
-        public static partial int EventSourceGetIoEvents(SdEventSourceHandle s, out int events);
+        public static partial int EventSourceGetIoEvents(SdEventSourceHandle s, out uint events);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_io_events")]
-        public static partial int EventSourceSetIoEvents(SdEventSourceHandle s, int events);
+        public static partial int EventSourceSetIoEvents(SdEventSourceHandle s, uint events);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_io_revents")]
-        public static partial int EventSourceGetIoRevents(SdEventSourceHandle s, out int revents);
+        public static partial int EventSourceGetIoRevents(SdEventSourceHandle s, out uint revents);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_time")]
         public static partial int EventSourceGetTime(SdEventSourceHandle s, out ulong usec);
@@ -242,16 +245,20 @@ public static partial class NativeMethods
         public static partial int EventSourceGetDestroyCallback(SdEventSourceHandle s, out nint callback);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_floating")]
-        public static partial int EventSourceGetFloating(SdEventSourceHandle s);
+        [return: MarshalUsing(typeof(BoolMarshaller))]
+        public static partial bool EventSourceGetFloating(SdEventSourceHandle s);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_floating")]
-        public static partial int EventSourceSetFloating(SdEventSourceHandle s, int b);
+        public static partial int EventSourceSetFloating(SdEventSourceHandle s,
+            [MarshalUsing(typeof(BoolMarshaller))] bool b);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_get_exit_on_failure")]
-        public static partial int EventSourceGetExitOnFailure(SdEventSourceHandle s);
+        [return: MarshalUsing(typeof(BoolMarshaller))]
+        public static partial bool EventSourceGetExitOnFailure(SdEventSourceHandle s);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_exit_on_failure")]
-        public static partial int EventSourceSetExitOnFailure(SdEventSourceHandle s, int b);
+        public static partial int EventSourceSetExitOnFailure(SdEventSourceHandle s,
+            [MarshalUsing(typeof(BoolMarshaller))] bool b);
 
         [LibraryImport(Library, EntryPoint = "sd_event_source_set_ratelimit")]
         public static partial int EventSourceSetRateLimit(SdEventSourceHandle s, ulong intervalUsec, uint burst);
