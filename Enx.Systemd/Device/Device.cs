@@ -133,7 +133,7 @@ public class Device : BaseWrapper<SdDeviceHandle>
             if (field == null)
             {
                 DeviceGetParent(Handle, out var ret);
-                field = new Device(ret, false);
+                field = new Device(ret, true);
             }
 
             return field.Handle.IsInvalid ? null : field;
@@ -383,7 +383,7 @@ public class Device : BaseWrapper<SdDeviceHandle>
     /// Enumerates direct child devices.
     /// </summary>
     [JsonIgnore]
-    public IEnumerable<Device> Childrens => field ??= new DeviceChildEnumerable(Handle);
+    public IEnumerable<Device> Childrens => new DeviceChildEnumerable(Handle);
 }
 
 internal class DeviceChildEnumerable(SdDeviceHandle handle) : IEnumerable<Device>, IEnumerator<Device>

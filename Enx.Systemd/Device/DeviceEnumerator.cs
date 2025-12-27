@@ -136,26 +136,12 @@ public class DeviceEnumerator(SdDeviceEnumeratorHandle handle, bool shouldRef)
     /// <summary>
     /// Enumerates devices that match the current filters.
     /// </summary>
-    public IEnumerable<Device> Devices
-    {
-        get
-        {
-            field ??= new DeviceEnumerable(Handle, false);
-            return field;
-        }
-    }
+    public IEnumerable<Device> Devices => new DeviceEnumerable(Handle, false);
 
     /// <summary>
     /// Enumerates matching subsystems.
     /// </summary>
-    public IEnumerable<Device> SubSystems
-    {
-        get
-        {
-            field ??= new DeviceEnumerable(Handle, true);
-            return field;
-        }
-    }
+    public IEnumerable<Device> SubSystems => new DeviceEnumerable(Handle, true);
 }
 
 internal class DeviceEnumerable(SdDeviceEnumeratorHandle handle, bool subsystem)

@@ -15,7 +15,7 @@
     <PackageTags>systemd;sd-device</PackageTags>
     <Authors>Jean-François Pustay</Authors>
     <Company>Personnal</Company>
-    <Version>0.0.2-alpha</Version>
+    <Version>0.0.3-alpha</Version>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <Description>
